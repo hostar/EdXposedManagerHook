@@ -18,25 +18,27 @@ public class Module implements IXposedHookLoadPackage {
 
     public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable
     {
+        private static final String CONSTANTS_CLASS = "noorg.nothing.nope.no.Constants";
+
         if (lpparam.packageName.equals("noorg.nothing.nope.no"))
         {
             XposedBridge.log("Loaded " + lpparam.packageName + ", hooking some things");
 
             try
             {
-                findAndHookMethod(CONSTANTS_CLASS, classLoader, "getActiveXposedVersion",
+                findAndHookMethod(CONSTANTS_CLASS, lpparam.classLoader, "getActiveXposedVersion",
                         XC_MethodReplacement.returnConstant(XposedBridge.getXposedVersion())
                 );
 
-                findAndHookMethod(CONSTANTS_CLASS, classLoader, "getInstalledXposedVersion",
+                findAndHookMethod(CONSTANTS_CLASS, lpparam.classLoader, "getInstalledXposedVersion",
                         XC_MethodReplacement.returnConstant(BuildConfig.VERSION_NAME + "_" + BuildConfig.VERSION_CODE + " (" + variant + ")")
                 );
 
-                findAndHookMethod(CONSTANTS_CLASS, classLoader, "getBaseDir",
+                findAndHookMethod(CONSTANTS_CLASS, lpparam.classLoader, "getBaseDir",
                         XC_MethodReplacement.returnConstant(ConfigManager.getBaseConfigPath() + "/")
                 );
 
-                findAndHookMethod(CONSTANTS_CLASS, classLoader, "isSELinuxEnforced",
+                findAndHookMethod(CONSTANTS_CLASS, lpparam.classLoader, "isSELinuxEnforced",
                         XC_MethodReplacement.returnConstant(ConfigManager.isSELinuxEnforced())
                 );
             }
