@@ -48,7 +48,7 @@ public class Module implements IXposedHookLoadPackage {
                 // Waits for the command to finish.
                 process.waitFor();
 
-                folderName = output.toString();
+                folderName = output.toString().trim();
             } catch (Exception e) {
                 XposedBridge.log(e.toString());
             }
