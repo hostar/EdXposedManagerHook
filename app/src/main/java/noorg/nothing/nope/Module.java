@@ -16,10 +16,9 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 public class Module implements IXposedHookLoadPackage {
 
+    private static final String CONSTANTS_CLASS = "noorg.nothing.nope.no.Constants";
     public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable
     {
-        private static final String CONSTANTS_CLASS = "noorg.nothing.nope.no.Constants";
-
         if (lpparam.packageName.equals("noorg.nothing.nope.no"))
         {
             XposedBridge.log("Loaded " + lpparam.packageName + ", hooking some things");
