@@ -14,6 +14,7 @@ import de.robv.android.xposed.XposedHelpers;
 import java.io.File;  // Import the File class
 import java.io.FileNotFoundException;  // Import this class to handle errors
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.PrintWriter;
 import java.util.Scanner; // Import the Scanner class to read text files
 
