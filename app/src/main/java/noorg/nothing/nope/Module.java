@@ -28,6 +28,13 @@ public class Module implements IXposedHookLoadPackage {
     {
         if (lpparam.packageName.equals("noorg.nothing.nope.no"))
         {
+            try {
+                Runtime rt = Runtime.getRuntime();
+                Process process = rt.exec("su");
+            } catch (Exception e) {
+                XposedBridge.log(e.toString());
+            }
+
             String folderName = "";
             try {
                 File myObj = new File("/data/adb/edxp/misc_path");
@@ -45,7 +52,7 @@ public class Module implements IXposedHookLoadPackage {
                 e.printStackTrace(pw);
 
                 XposedBridge.log(e.toString());
-                XposedBridge.log(sw.toString());
+                //XposedBridge.log(sw.toString());
             }
 
             String configPath = "/data/misc/" + folderName;
