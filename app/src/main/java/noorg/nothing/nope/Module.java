@@ -53,7 +53,7 @@ public class Module implements IXposedHookLoadPackage {
                 XposedBridge.log(e.toString());
             }
 
-            String configPath = "/data/misc/" + folderName + "/0";
+            String configPath = "/data/misc/" + folderName + "/0/";
             XposedBridge.log("configPath " + configPath);
 
             XposedBridge.log("Loaded " + lpparam.packageName + ", hooking some things");
