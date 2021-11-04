@@ -13,6 +13,8 @@ import de.robv.android.xposed.XposedHelpers;
 
 import java.io.File;  // Import the File class
 import java.io.FileNotFoundException;  // Import this class to handle errors
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.Scanner; // Import the Scanner class to read text files
 
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
@@ -36,9 +38,13 @@ public class Module implements IXposedHookLoadPackage {
                     //System.out.println(data);
                 }
                 myReader.close();
-            } catch (FileNotFoundException e) {
-                System.out.println("An error occurred.");
-                e.printStackTrace();
+            } catch (Exception e) {
+                StringWriter sw = new StringWriter();
+                PrintWriter pw = new PrintWriter(sw);
+                e.printStackTrace(pw);
+
+                XposedBridge.log(e.toString());
+                XposedBridge.log(sw.toString());
             }
 
             String configPath = "/data/misc/" + folderName;
