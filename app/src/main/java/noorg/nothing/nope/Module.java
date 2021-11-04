@@ -16,6 +16,34 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 public class Module implements IXposedHookLoadPackage {
 
+    public static native boolean isBlackWhiteListEnabled();
+
+    public static native boolean isNoModuleLogEnabled();
+
+    public static native boolean isResourcesHookEnabled();
+
+//    public static native boolean isDeoptBootImageEnabled();
+
+    public static native boolean isSELinuxEnforced();
+
+    public static native String getInstallerPackageName();
+
+//    public static native String getXposedPropPath();
+
+    public static native String getLibSandHookName();
+
+    public static native String getConfigPath(String suffix);
+
+    public static native String getPrefsPath(String suffix);
+
+    public static native String getCachePath(String suffix);
+
+    public static native String getBaseConfigPath();
+
+    public static native String getDataPathPrefix();
+
+    public static native String getModulesList();
+
     private static final String CONSTANTS_CLASS = "noorg.nothing.nope.no.Constants";
     public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable
     {
@@ -36,11 +64,11 @@ public class Module implements IXposedHookLoadPackage {
                 );
 
                 findAndHookMethod(CONSTANTS_CLASS, lpparam.classLoader, "getBaseDir",
-                        XC_MethodReplacement.returnConstant(ConfigManager.getBaseConfigPath() + "/")
+                        XC_MethodReplacement.returnConstant(getBaseConfigPath() + "/")
                 );
 
                 findAndHookMethod(CONSTANTS_CLASS, lpparam.classLoader, "isSELinuxEnforced",
-                        XC_MethodReplacement.returnConstant(ConfigManager.isSELinuxEnforced())
+                        XC_MethodReplacement.returnConstant(isSELinuxEnforced())
                 );
             }
             catch (NoSuchMethodError e)
