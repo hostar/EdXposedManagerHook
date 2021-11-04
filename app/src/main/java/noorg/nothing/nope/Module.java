@@ -53,28 +53,7 @@ public class Module implements IXposedHookLoadPackage {
                 XposedBridge.log(e.toString());
             }
 
-            /*
-            try {
-                File myObj = new File("/data/adb/edxp/misc_path");
-                Scanner myReader = new Scanner(myObj);
-                while (myReader.hasNextLine()) {
-                    folderName = myReader.nextLine();
-                    XposedBridge.log("folderName " + folderName);
-                    break;
-                    //System.out.println(data);
-                }
-                myReader.close();
-            } catch (Exception e) {
-                StringWriter sw = new StringWriter();
-                PrintWriter pw = new PrintWriter(sw);
-                e.printStackTrace(pw);
-
-                XposedBridge.log(e.toString());
-                //XposedBridge.log(sw.toString());
-            }
-            */
-
-            String configPath = "/data/misc/" + folderName;
+            String configPath = "/data/misc/" + folderName + "/";
             XposedBridge.log("configPath " + configPath);
 
             XposedBridge.log("Loaded " + lpparam.packageName + ", hooking some things");
