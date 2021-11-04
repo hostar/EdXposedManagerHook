@@ -28,14 +28,30 @@ public class Module implements IXposedHookLoadPackage {
     {
         if (lpparam.packageName.equals("noorg.nothing.nope.no"))
         {
+            String folderName = "";
             try {
                 Runtime rt = Runtime.getRuntime();
-                Process process = rt.exec("su");
+                Process process = rt.exec("su -c cat /data/adb/edxp/misc_path");
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
+                int read;
+                char[] buffer = new char[4096];
+                StringBuffer output = new StringBuffer();
+                while ((read = reader.read(buffer)) > 0) {
+                    output.append(buffer, 0, read);
+                }
+                reader.close();
+
+                // Waits for the command to finish.
+                process.waitFor();
+
+                folderName = output.toString();
             } catch (Exception e) {
                 XposedBridge.log(e.toString());
             }
 
-            String folderName = "";
+            /*
             try {
                 File myObj = new File("/data/adb/edxp/misc_path");
                 Scanner myReader = new Scanner(myObj);
@@ -54,6 +70,7 @@ public class Module implements IXposedHookLoadPackage {
                 XposedBridge.log(e.toString());
                 //XposedBridge.log(sw.toString());
             }
+            */
 
             String configPath = "/data/misc/" + folderName;
             XposedBridge.log("configPath " + configPath);
