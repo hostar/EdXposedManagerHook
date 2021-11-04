@@ -29,6 +29,8 @@ public class Module implements IXposedHookLoadPackage {
                         XC_MethodReplacement.returnConstant(XposedBridge.getXposedVersion())
                 );
 
+                String variant = "SandHook"; // YAHFA
+
                 findAndHookMethod(CONSTANTS_CLASS, lpparam.classLoader, "getInstalledXposedVersion",
                         XC_MethodReplacement.returnConstant(BuildConfig.VERSION_NAME + "_" + BuildConfig.VERSION_CODE + " (" + variant + ")")
                 );
