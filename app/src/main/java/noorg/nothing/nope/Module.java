@@ -11,44 +11,39 @@ import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
+import java.io.File;  // Import the File class
+import java.io.FileNotFoundException;  // Import this class to handle errors
+import java.util.Scanner; // Import the Scanner class to read text files
+
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 public class Module implements IXposedHookLoadPackage {
-
-    public static native boolean isBlackWhiteListEnabled();
-
-    public static native boolean isNoModuleLogEnabled();
-
-    public static native boolean isResourcesHookEnabled();
-
-//    public static native boolean isDeoptBootImageEnabled();
-
-    public static native boolean isSELinuxEnforced();
-
-    public static native String getInstallerPackageName();
-
-//    public static native String getXposedPropPath();
-
-    public static native String getLibSandHookName();
-
-    public static native String getConfigPath(String suffix);
-
-    public static native String getPrefsPath(String suffix);
-
-    public static native String getCachePath(String suffix);
-
-    public static native String getBaseConfigPath();
-
-    public static native String getDataPathPrefix();
-
-    public static native String getModulesList();
 
     private static final String CONSTANTS_CLASS = "noorg.nothing.nope.no.Constants";
     public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable
     {
         if (lpparam.packageName.equals("noorg.nothing.nope.no"))
         {
+            String folderName = "";
+            try {
+                File myObj = new File("/data/adb/edxp/misc_path");
+                Scanner myReader = new Scanner(myObj);
+                while (myReader.hasNextLine()) {
+                    folderName = myReader.nextLine();
+                    XposedBridge.log("folderName " + folderName);
+                    break;
+                    //System.out.println(data);
+                }
+                myReader.close();
+            } catch (FileNotFoundException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+
+            String configPath = "/data/misc/" + folderName;
+            XposedBridge.log("configPath " + configPath);
+
             XposedBridge.log("Loaded " + lpparam.packageName + ", hooking some things");
 
             try
@@ -64,11 +59,11 @@ public class Module implements IXposedHookLoadPackage {
                 );
 
                 findAndHookMethod(CONSTANTS_CLASS, lpparam.classLoader, "getBaseDir",
-                        XC_MethodReplacement.returnConstant(getBaseConfigPath() + "/")
+                        XC_MethodReplacement.returnConstant(configPath)
                 );
 
                 findAndHookMethod(CONSTANTS_CLASS, lpparam.classLoader, "isSELinuxEnforced",
-                        XC_MethodReplacement.returnConstant(isSELinuxEnforced())
+                        XC_MethodReplacement.returnConstant(true)
                 );
             }
             catch (NoSuchMethodError e)
